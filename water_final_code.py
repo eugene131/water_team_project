@@ -26,24 +26,25 @@ chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 
 #7개의 스레드를 만들거기 때문에 드라이버 7개 생성
+#driver = webdriver.Chrome('/usr/local/bin/chromdriver', options=chrome_options)
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 driver.get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
+
 driver2 = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-# #driver2 = webdriver.Chrome('chromedriver.exe', options=chrome_options)
 driver2.get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
-# #driver3 = webdriver.Chrome('chromedriver.exe', options=chrome_options)
+
 driver3 = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 driver3.get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
-# #driver4 = webdriver.Chrome('chromedriver.exe', options=chrome_options)
+
 driver4 = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 driver4.get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
-# #driver5 = webdriver.Chrome('chromedriver.exe', options=chrome_options)
+
 driver5 = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 driver5.get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
-# #driver6 = webdriver.Chrome('chromedriver.exe', options=chrome_options)
+
 driver6 = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 driver6.get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
-# #driver7 = webdriver.Chrome('chromedriver.exe', options=chrome_options)
+
 driver7 = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 driver7.get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
 driver.implicitly_wait(10)
@@ -52,7 +53,7 @@ sleep(0.1)
 #page 소스 읽어서
 res_resz=driver.page_source
 souprz = BeautifulSoup(res_resz,'html.parser')#해당 부분읽어서 html형식으로
-#print(souprz)
+
 rezion = souprz.find('select',title="시도선택")#읽어 들인 것들 중 시도 선택 배너에 있는거 다 읽어들이기
 driver.implicitly_wait(100)
 sleep(0.1)
@@ -61,7 +62,12 @@ rezion_all=rezion.get_text('\n').split('\n')#시도 선택 배너에 있는 데�
 rezion_all.pop(0)
 rezion_all.pop(0)
 rezion_all.pop(0)
+f=open("/home/eugene131/waterpy/rez_시도.txt","w")
+for i in rezion_all:
+    f.write(i+" ")
 print(rezion_all)
+f.close()
+
 
 #각 시도 읽어들인거 하나씩 클릭해서 그 아래에 뜨는 시군구 선택 읽고 정리
 final_rezion=[]#최종적으로 첫번째에 시도, 그 다음부터 군구 있는 리스트 만들기위함
@@ -83,7 +89,7 @@ for i in rezion_all:
 #    print(a)
     final_rezion.append(a)
 print(rezion_all)
-final_rezion[14].pop(14)#이상하게 영양시만 안되서 일단 빼둠
+#final_rezion[14].pop(14)#이상하게 영양시만 안되서 일단 빼둠
 for i in final_rezion:
     print(i)
 
@@ -156,7 +162,7 @@ def th_demo(num1,num2, f_name,f1_name,f2_name,driver):
                             f1.write(rezion_all[i]+','+j+','+adr2_2[0].replace('신주소 :','')+','+adr2_2[1].replace('신주소 :','')+','+name[k].text.replace(',',' ')+','+a+'\n')
                             f.write(rezion_all[i]+','+j+','+adr2_2[0].replace('신주소 :','')+','+adr2_2[1].replace('신주소 :','')+','+name[k].text.replace(',',' ')+','+a+'\n')
                             
-                          #  print(rezion_all[i]+','+j+','+adr2_2[0].replace('신주소 :','')+','+adr2_2[1].replace('신주소 :','')+','+name[k].text.replace(',',' ')+','+a)
+                            #print(rezion_all[i]+','+j+','+adr2_2[0].replace('신주소 :','')+','+adr2_2[1].replace('신주소 :','')+','+name[k].text.replace(',',' ')+','+a)
                     
                     if (int(ch1)==int(ch2)):#물 양을 시군구 별로 물 저장용 f2에 저장
                         f2.write(rezion_all[i]+','+j+','+str(water_wi)+"t\n")
@@ -213,7 +219,7 @@ def th_demo(num1,num2, f_name,f1_name,f2_name,driver):
 
                             f1.write(rezion_all[i]+','+j+','+adr2_2[0].replace('신주소 :','')+','+adr2_2[1].replace('신주소 :','')+','+name[k].text.replace(',',' ')+','+a+'\n')
                             f.write(rezion_all[i]+','+j+','+adr2_2[0].replace('신주소 :','')+','+adr2_2[1].replace('신주소 :','')+','+name[k].text.replace(',',' ')+','+a+'\n')
-                           # print(rezion_all[i]+','+j+','+adr2_2[0].replace('신주소 :','')+','+adr2_2[1].replace('신주소 :','')+','+name[k].text.replace(',',' ')+','+a)
+                            #print(rezion_all[i]+','+j+','+adr2_2[0].replace('신주소 :','')+','+adr2_2[1].replace('신주소 :','')+','+name[k].text.replace(',',' ')+','+a)
 
                     # for r in ppp_data:
                     #     print(r.text)
