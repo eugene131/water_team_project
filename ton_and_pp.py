@@ -3,9 +3,9 @@ import csv
 import json
 import numpy as np
 
-train=pd.read_excel('/home/eugene131/waterpy/poppulation.xlsx')#인구, 물 양을 데이터로 읽어옴
-f=open('/home/eugene131/waterpy/rez_시도.txt',"r")
-f1=open('/home/eugene131/waterpy/wtater_ton_final.csv',"r")
+train=pd.read_excel('/home/eugene131/waterpy/w_file/poppulation.xlsx')#인구, 물 양을 데이터로 읽어옴
+f=open('/home/eugene131/waterpy/w_file/rez_시도.txt',"r")
+f1=open('/home/eugene131/waterpy/w_file/wtater_ton_final.csv',"r")
 water_ton=f1.readlines()#지역별 물 양을 읽어서 리스트로 저장
 rezon_fi_check=[]#지역 최종 체크
 water_ton_final=[]
@@ -62,6 +62,6 @@ train["1인당 사용 가능 물"]=perst_water_list#1인당 사용 가능한 물
 #train = train.sort_values(['1인당 사용 가능 물'],ascending=False)#1인당 물 사용 가능량에 따라서 소팅
 
 
-train.to_excel('물 비율.xlsx',index=False)#물 비율이라는 엑셀 만들어줌
+train.to_excel('w_file/물 비율.xlsx',index=False)#물 비율이라는 엑셀 만들어줌
 f.close()
 f1.close()

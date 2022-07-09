@@ -19,7 +19,7 @@ import pandas as pd
 import csv
 import json
 from threading import Thread
-
+import copy
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
@@ -62,7 +62,7 @@ rezion_all=rezion.get_text('\n').split('\n')#시도 선택 배너에 있는 데�
 rezion_all.pop(0)
 rezion_all.pop(0)
 rezion_all.pop(0)
-f=open("/home/eugene131/waterpy/rez_시도.txt","w")
+f=open("/home/eugene131/waterpy/w_file/rez_시도.txt","w")
 for i in rezion_all:
     f.write(i+" ")
 print(rezion_all)
@@ -97,8 +97,7 @@ for i in final_rezion:
 #f_name에txt파일로 저장, f1에 csv파일로 저장 f2에 급수량만 군구별로 저장
 #txt파일은 csv파일이 열리지 않을 때, 오류 부분 직관적으로 확인하기 위함
 #driver가 따로 필요하기 때문에 driver를 받아서 실행
-def th_demo(num1,num2, f_name,f1_name,f2_name,driver):
-    global final_rezion, rezion_all#final_rizion=시도, rezion_all=시군구 데이터
+def th_demo(num1,num2, f_name,f1_name,f2_name,driver,final_rezion,rezion_all):#final_rizion=시도, rezion_all=시군구 데이터
     full_data=[]
     f= open(f_name,"w")
     f1=open(f1_name,"w")
@@ -236,25 +235,25 @@ def th_demo(num1,num2, f_name,f1_name,f2_name,driver):
     driver.quit()
 
 #쓰레드별로 실행
-th1=Thread(target=th_demo,args=(0,1,"/home/eugene131/waterpy/final_text1.txt","/home/eugene131/waterpy/final_csv1.csv","/home/eugene131/waterpy/water_ton1.csv",driver))
+th1=Thread(target=th_demo,args=(0,1,"/home/eugene131/waterpy/w_file/final_text1.txt","/home/eugene131/waterpy/w_file/final_csv1.csv","/home/eugene131/waterpy/w_file/water_ton1.csv",driver,final_rezion,rezion_all))
 th1.start()
 
-th5=Thread(target=th_demo,args=(8,9,"/home/eugene131/waterpy/final_text5.txt","/home/eugene131/waterpy/final_csv5.csv","/home/eugene131/waterpy/water_ton5.csv",driver5))
+th5=Thread(target=th_demo,args=(8,9,"/home/eugene131/waterpy/w_file/final_text5.txt","/home/eugene131/waterpy/w_file/final_csv5.csv","/home/eugene131/waterpy/w_file/water_ton5.csv",driver5,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
 th5.start()
 
-th2=Thread(target=th_demo,args=(1,2,"/home/eugene131/waterpy/final_text2.txt","/home/eugene131/waterpy/final_csv2.csv","/home/eugene131/waterpy/water_ton2.csv",driver2))
+th2=Thread(target=th_demo,args=(1,2,"/home/eugene131/waterpy/w_file/final_text2.txt","/home/eugene131/waterpy/w_file/final_csv2.csv","/home/eugene131/waterpy/w_file/water_ton2.csv",driver2,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
 th2.start()
 
-th3=Thread(target=th_demo,args=(2,6,"/home/eugene131/waterpy/final_text3.txt","/home/eugene131/waterpy/final_csv3.csv","/home/eugene131/waterpy/water_ton3.csv",driver3))
+th3=Thread(target=th_demo,args=(2,6,"/home/eugene131/waterpy/w_file/final_text3.txt","/home/eugene131/waterpy/w_file/final_csv3.csv","/home/eugene131/waterpy/w_file/water_ton3.csv",driver3,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
 th3.start()
 
-th4=Thread(target=th_demo,args=(6,8,"/home/eugene131/waterpy/final_text4.txt","/home/eugene131/waterpy/final_csv4.csv","/home/eugene131/waterpy/water_ton4.csv",driver4))
+th4=Thread(target=th_demo,args=(6,8,"/home/eugene131/waterpy/w_file/final_text4.txt","/home/eugene131/waterpy/w_file/final_csv4.csv","/home/eugene131/waterpy/w_file/water_ton4.csv",driver4,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
 th4.start()
 
-th6=Thread(target=th_demo,args=(9,13,"/home/eugene131/waterpy/final_text6.txt","/home/eugene131/waterpy/final_csv6.csv","/home/eugene131/waterpy/water_ton6.csv",driver6))
+th6=Thread(target=th_demo,args=(9,13,"/home/eugene131/waterpy/w_file/final_text6.txt","/home/eugene131/waterpy/w_file/final_csv6.csv","/home/eugene131/waterpy/w_file/water_ton6.csv",driver6,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
 th6.start()
 
-th7=Thread(target=th_demo,args=(13,17,"/home/eugene131/waterpy/final_text7.txt","/home/eugene131/waterpy/final_csv7.csv","/home/eugene131/waterpy/water_ton7.csv",driver7))
+th7=Thread(target=th_demo,args=(13,17,"/home/eugene131/waterpy/w_file/final_text7.txt","/home/eugene131/waterpy/w_file/final_csv7.csv","/home/eugene131/waterpy/w_file/water_ton7.csv",driver7,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
 th7.start()
 
 th1.join()
@@ -267,23 +266,23 @@ th7.join()
 
 
 #쓰레드로 파일 7개 생성 -> 7개 파일 하나로 합쳐주는 작업
-f1= open("/home/eugene131/waterpy/final_csv1.csv","r")
-f2= open("/home/eugene131/waterpy/final_csv2.csv","r")
-f3= open("/home/eugene131/waterpy/final_csv3.csv","r")
-f4= open("/home/eugene131/waterpy/final_csv4.csv","r")
-f5= open("/home/eugene131/waterpy/final_csv5.csv","r")
-f6= open("/home/eugene131/waterpy/final_csv6.csv","r")
-f7= open("/home/eugene131/waterpy/final_csv7.csv","r")
-f_fi= open("/home/eugene131/waterpy/re_final_csv.csv","w")
+f1= open("/home/eugene131/waterpy/w_file/final_csv1.csv","r")
+f2= open("/home/eugene131/waterpy/w_file/final_csv2.csv","r")
+f3= open("/home/eugene131/waterpy/w_file/final_csv3.csv","r")
+f4= open("/home/eugene131/waterpy/w_file/final_csv4.csv","r")
+f5= open("/home/eugene131/waterpy/w_file/final_csv5.csv","r")
+f6= open("/home/eugene131/waterpy/w_file/final_csv6.csv","r")
+f7= open("/home/eugene131/waterpy/w_file/final_csv7.csv","r")
+f_fi= open("/home/eugene131/waterpy/w_file/re_final_csv.csv","w")
 
-wf1=open("/home/eugene131/waterpy/water_ton1.csv","r")
-wf2=open("/home/eugene131/waterpy/water_ton2.csv","r")
-wf3=open("/home/eugene131/waterpy/water_ton3.csv","r")
-wf4=open("/home/eugene131/waterpy/water_ton4.csv","r")
-wf5=open("/home/eugene131/waterpy/water_ton5.csv","r")
-wf6=open("/home/eugene131/waterpy/water_ton6.csv","r")
-wf7=open("/home/eugene131/waterpy/water_ton7.csv","r")
-wf_fi=open("/home/eugene131/waterpy/wtater_ton_final.csv","w")
+wf1=open("/home/eugene131/waterpy/w_file/water_ton1.csv","r")
+wf2=open("/home/eugene131/waterpy/w_file/water_ton2.csv","r")
+wf3=open("/home/eugene131/waterpy/w_file/water_ton3.csv","r")
+wf4=open("/home/eugene131/waterpy/w_file/water_ton4.csv","r")
+wf5=open("/home/eugene131/waterpy/w_file/water_ton5.csv","r")
+wf6=open("/home/eugene131/waterpy/w_file/water_ton6.csv","r")
+wf7=open("/home/eugene131/waterpy/w_file/water_ton7.csv","r")
+wf_fi=open("/home/eugene131/waterpy/w_file/wtater_ton_final.csv","w")
 
 for i in wf1.readlines():
     wf_fi.write(i)

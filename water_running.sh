@@ -1,7 +1,9 @@
 #!/bin/sh
 
 python3 water_final_code.py
+python3 ton_and_pp.py
 
+cd w_file/
 rm final_csv1.csv
 rm final_csv2.csv
 rm final_csv3.csv
@@ -25,3 +27,5 @@ rm water_ton4.csv
 rm water_ton5.csv
 rm water_ton6.csv
 rm water_ton7.csv
+
+cd -
