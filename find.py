@@ -8,8 +8,8 @@ for i in range(0,10):
     find_data=[]
     find_data=input()
     a.append(find_data)
-
-train=pd.read_excel('/home/eugene131/waterpy/w_file/물 비율.xlsx')#인구, 물 양을 데이터로 읽어옴
+sh_url="/home/eugene131/waterpy/w_file/"
+train=pd.read_excel(sh_url+'물 비율.xlsx')#인구, 물 양을 데이터로 읽어옴
 delete_list=train.loc[~(train['지역'].isin(a))].index.tolist()
 train=train.drop(delete_list)
 train.to_excel('output.xlsx',index=False)

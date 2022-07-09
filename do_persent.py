@@ -2,11 +2,11 @@ import pandas as pd
 import csv
 import json
 import numpy as np
-
-train=pd.read_excel('/home/eugene131/waterpy/w_file/물 비율.xlsx')#인구, 물 양을 데이터로 읽어옴
-f=open('/home/eugene131/waterpy/w_file/wtater_ton_final.csv',"r")
-f_sido=open('/home/eugene131/waterpy/w_file/rez_시도.txt',"r")
-f_persent=open('/home/eugene131/waterpy/w_file/시도_퍼센트.csv',"w")
+share_url="/home/eugene131/waterpy/w_file/"
+train=pd.read_excel(share_url+'물 비율.xlsx')#인구, 물 양을 데이터로 읽어옴
+f=open(share_url+'wtater_ton_final.csv',"r")
+f_sido=open(share_url+'rez_시도.txt',"r")
+f_persent=open(share_url+'시도_퍼센트.csv',"w")
 
 #두 종류 다 시군구 파악하는 코드임
 rezon_all1=[]

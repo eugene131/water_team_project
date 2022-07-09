@@ -1,8 +1,8 @@
 from string import digits
 import re
-
-f_input=open("/home/eugene131/waterpy/w_file/wet_string.txt","r")
-f_output=open("/home/eugene131/waterpy/w_file/water.txt","w")
+share_url="/home/eugene131/waterpy/w_file/"
+f_input=open(share_url+"wet_string.txt","r")
+f_output=open(share_url+"water.txt","w")
 #print(f_input.readline())
 string_wet_list=[]
 for a in f_input.readlines():

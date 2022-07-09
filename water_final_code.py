@@ -62,7 +62,8 @@ rezion_all=rezion.get_text('\n').split('\n')#시도 선택 배너에 있는 데�
 rezion_all.pop(0)
 rezion_all.pop(0)
 rezion_all.pop(0)
-f=open("/home/eugene131/waterpy/w_file/rez_시도.txt","w")
+share_url="/home/eugene131/waterpy/w_file/"
+f=open(share_url+"rez_시도.txt","w")
 for i in rezion_all:
     f.write(i+" ")
 print(rezion_all)
@@ -235,25 +236,25 @@ def th_demo(num1,num2, f_name,f1_name,f2_name,driver,final_rezion,rezion_all):#f
     driver.quit()
 
 #쓰레드별로 실행
-th1=Thread(target=th_demo,args=(0,1,"/home/eugene131/waterpy/w_file/final_text1.txt","/home/eugene131/waterpy/w_file/final_csv1.csv","/home/eugene131/waterpy/w_file/water_ton1.csv",driver,final_rezion,rezion_all))
+th1=Thread(target=th_demo,args=(0,1,share_url+"final_text1.txt",share_url+"final_csv1.csv",share_url+"water_ton1.csv",driver,final_rezion,rezion_all))
 th1.start()
 
-th5=Thread(target=th_demo,args=(8,9,"/home/eugene131/waterpy/w_file/final_text5.txt","/home/eugene131/waterpy/w_file/final_csv5.csv","/home/eugene131/waterpy/w_file/water_ton5.csv",driver5,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
+th5=Thread(target=th_demo,args=(8,9,share_url+"final_text5.txt",share_url+"final_csv5.csv",share_url+"water_ton5.csv",driver5,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
 th5.start()
 
-th2=Thread(target=th_demo,args=(1,2,"/home/eugene131/waterpy/w_file/final_text2.txt","/home/eugene131/waterpy/w_file/final_csv2.csv","/home/eugene131/waterpy/w_file/water_ton2.csv",driver2,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
+th2=Thread(target=th_demo,args=(1,2,share_url+"final_text2.txt",share_url+"final_csv2.csv",share_url+"water_ton2.csv",driver2,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
 th2.start()
 
-th3=Thread(target=th_demo,args=(2,6,"/home/eugene131/waterpy/w_file/final_text3.txt","/home/eugene131/waterpy/w_file/final_csv3.csv","/home/eugene131/waterpy/w_file/water_ton3.csv",driver3,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
+th3=Thread(target=th_demo,args=(2,6,share_url+"final_text3.txt",share_url+"final_csv3.csv",share_url+"water_ton3.csv",driver3,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
 th3.start()
 
-th4=Thread(target=th_demo,args=(6,8,"/home/eugene131/waterpy/w_file/final_text4.txt","/home/eugene131/waterpy/w_file/final_csv4.csv","/home/eugene131/waterpy/w_file/water_ton4.csv",driver4,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
+th4=Thread(target=th_demo,args=(6,8,share_url+"final_text4.txt",share_url+"final_csv4.csv",share_url+"water_ton4.csv",driver4,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
 th4.start()
 
-th6=Thread(target=th_demo,args=(9,13,"/home/eugene131/waterpy/w_file/final_text6.txt","/home/eugene131/waterpy/w_file/final_csv6.csv","/home/eugene131/waterpy/w_file/water_ton6.csv",driver6,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
+th6=Thread(target=th_demo,args=(9,13,share_url+"final_text6.txt",share_url+"final_csv6.csv",share_url+"water_ton6.csv",driver6,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
 th6.start()
 
-th7=Thread(target=th_demo,args=(13,17,"/home/eugene131/waterpy/w_file/final_text7.txt","/home/eugene131/waterpy/w_file/final_csv7.csv","/home/eugene131/waterpy/w_file/water_ton7.csv",driver7,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
+th7=Thread(target=th_demo,args=(13,17,share_url+"final_text7.txt",share_url+"final_csv7.csv",share_url+"water_ton7.csv",driver7,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
 th7.start()
 
 th1.join()
@@ -266,23 +267,23 @@ th7.join()
 
 
 #쓰레드로 파일 7개 생성 -> 7개 파일 하나로 합쳐주는 작업
-f1= open("/home/eugene131/waterpy/w_file/final_csv1.csv","r")
-f2= open("/home/eugene131/waterpy/w_file/final_csv2.csv","r")
-f3= open("/home/eugene131/waterpy/w_file/final_csv3.csv","r")
-f4= open("/home/eugene131/waterpy/w_file/final_csv4.csv","r")
-f5= open("/home/eugene131/waterpy/w_file/final_csv5.csv","r")
-f6= open("/home/eugene131/waterpy/w_file/final_csv6.csv","r")
-f7= open("/home/eugene131/waterpy/w_file/final_csv7.csv","r")
-f_fi= open("/home/eugene131/waterpy/w_file/re_final_csv.csv","w")
+f1= open(share_url+"final_csv1.csv","r")
+f2= open(share_url+"final_csv2.csv","r")
+f3= open(share_url+"final_csv3.csv","r")
+f4= open(share_url+"final_csv4.csv","r")
+f5= open(share_url+"final_csv5.csv","r")
+f6= open(share_url+"final_csv6.csv","r")
+f7= open(share_url+"final_csv7.csv","r")
+f_fi= open(share_url+"re_final_csv.csv","w")
 
-wf1=open("/home/eugene131/waterpy/w_file/water_ton1.csv","r")
-wf2=open("/home/eugene131/waterpy/w_file/water_ton2.csv","r")
-wf3=open("/home/eugene131/waterpy/w_file/water_ton3.csv","r")
-wf4=open("/home/eugene131/waterpy/w_file/water_ton4.csv","r")
-wf5=open("/home/eugene131/waterpy/w_file/water_ton5.csv","r")
-wf6=open("/home/eugene131/waterpy/w_file/water_ton6.csv","r")
-wf7=open("/home/eugene131/waterpy/w_file/water_ton7.csv","r")
-wf_fi=open("/home/eugene131/waterpy/w_file/wtater_ton_final.csv","w")
+wf1=open(share_url+"water_ton1.csv","r")
+wf2=open(share_url+"water_ton2.csv","r")
+wf3=open(share_url+"water_ton3.csv","r")
+wf4=open(share_url+"water_ton4.csv","r")
+wf5=open(share_url+"water_ton5.csv","r")
+wf6=open(share_url+"water_ton6.csv","r")
+wf7=open(share_url+"water_ton7.csv","r")
+wf_fi=open(share_url+"wtater_ton_final.csv","w")
 
 for i in wf1.readlines():
     wf_fi.write(i)
