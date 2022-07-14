@@ -23,5 +23,5 @@
     - wet_string에서 정보를 읽어 단위를 하나씩만 보이게 한 후 water.txt파일로 제공
     - 물의 단위가 톤이 아닌 것들이 무엇이 있는지 확인해줌
 7. do_persent
-    - '물 비율'.xlsx파일과 water_ton_final.csv, rez_시도.txt파일을 받아서
+    - '물 비율'.xlsx파일과 water_ton_final.csv, rez_시도.txt파일을 받아서 시도_퍼센트.csv로 
     - 시도 단위로 1인당 사용가능 물 양이 25L보다 작은 지역의 비율을 보여줌
