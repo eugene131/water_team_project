@@ -1,9 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from bs4 import BeautifulSoup
-import time
 from selenium.webdriver.common.keys import Keys
-from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from urllib.request import urlopen
@@ -15,9 +13,7 @@ import time
 from time import sleep
 import sys
 from selenium.webdriver import ActionChains
-import pandas as pd
 import csv
-import json
 from threading import Thread
 import copy
 chrome_options = webdriver.ChromeOptions()
@@ -27,74 +23,52 @@ chrome_options.add_argument('--disable-dev-shm-usage')
 
 #7개의 스레드를 만들거기 때문에 드라이버 7개 생성
 #driver = webdriver.Chrome('/usr/local/bin/chromdriver', options=chrome_options)
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-driver.get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
+print("water_final_code.py start...")
 
-driver2 = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-driver2.get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
-
-driver3 = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-driver3.get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
-
-driver4 = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-driver4.get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
-
-driver5 = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-driver5.get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
-
-driver6 = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-driver6.get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
-
-driver7 = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-driver7.get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
-driver.implicitly_wait(10)
+driver = []
+for i in range(7):
+    driver.append(webdriver.Chrome("./chromdriver"))    
+    driver[i].get('https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/civil_defense/SDIJKM1401.html?menuSeq=56')#드라이버 연결
 sleep(0.1)
 
 #page 소스 읽어서
-res_resz=driver.page_source
+res_resz=driver[0].page_source
 souprz = BeautifulSoup(res_resz,'html.parser')#해당 부분읽어서 html형식으로
 
 rezion = souprz.find('select',title="시도선택")#읽어 들인 것들 중 시도 선택 배너에 있는거 다 읽어들이기
-driver.implicitly_wait(100)
+driver[0].implicitly_wait(100)
 sleep(0.1)
 
 rezion_all=rezion.get_text('\n').split('\n')#시도 선택 배너에 있는 데이터 읽어들이기, 정리
 rezion_all.pop(0)
 rezion_all.pop(0)
 rezion_all.pop(0)
-share_url="/home/eugene131/waterpy/w_file/"
+share_url="/home/eugene131/waterpy/"
 f=open(share_url+"rez_시도.txt","w")
 for i in rezion_all:
     f.write(i+" ")
-print(rezion_all)
 f.close()
-
 
 #각 시도 읽어들인거 하나씩 클릭해서 그 아래에 뜨는 시군구 선택 읽고 정리
 final_rezion=[]#최종적으로 첫번째에 시도, 그 다음부터 군구 있는 리스트 만들기위함
 for i in rezion_all:
     #print(i)
-    driver.find_element(By.XPATH,'//*[@id="sbRnArea1"]/option[text()="'+i+'"]').click()
-    driver.implicitly_wait(100)
+    driver[0].find_element(By.XPATH,'//*[@id="sbRnArea1"]/option[text()="'+i+'"]').click()
+    driver[0].implicitly_wait(100)
     sleep(0.3)
-    res2 = driver.page_source
+    res2 = driver[0].page_source
     sigoon = BeautifulSoup(res2, 'html.parser')
     sigoon1 = sigoon.find('select', title="시군구선택")
     
     sigoon_all=sigoon1.get_text('\n').split('\n')
     for j in range(0,3):
         sigoon_all.pop(0)
-    #print(sigoon_all)
     a=[]
     a=sigoon_all
-#    print(a)
     final_rezion.append(a)
-print(rezion_all)
 #final_rezion[14].pop(14)#이상하게 영양시만 안되서 일단 빼둠
-for i in final_rezion:
-    print(i)
 
-    #num1 부터 num2까지 final_rezion에 들어있는 시도 데이터 읽어들임
+#num1 부터 num2까지 final_rezion에 들어있는 시도 데이터 읽어들임
 #f_name에txt파일로 저장, f1에 csv파일로 저장 f2에 급수량만 군구별로 저장
 #txt파일은 csv파일이 열리지 않을 때, 오류 부분 직관적으로 확인하기 위함
 #driver가 따로 필요하기 때문에 driver를 받아서 실행
@@ -108,7 +82,7 @@ def th_demo(num1,num2, f_name,f1_name,f2_name,driver,final_rezion,rezion_all):#f
         f1.write('시도,군구,신주소,구주소,이름,용량\n')#csv파일에 구분 주기 위한 배너
 
     check_list_eq_ton=["t(톤)/시간","㎥/시간","t(톤)","㎥/일","㎥","톤/일","㎡","m","길이","㎜","㎥/년","기타","HP","ton"]#톤 단위 t로 통일 시키기 위해서 나오는 단위 전부 찾아서 만
-    #check_list_not_eq_ton=["t(톤)/시간","㎥/시간"]
+
     for i in range(num1,num2):#총 17개의 시, 도가 있음, num1 시도 부터 num2 시도까지
        
         if i!=7:
@@ -219,10 +193,7 @@ def th_demo(num1,num2, f_name,f1_name,f2_name,driver,final_rezion,rezion_all):#f
 
                             f1.write(rezion_all[i]+','+j+','+adr2_2[0].replace('신주소 :','')+','+adr2_2[1].replace('신주소 :','')+','+name[k].text.replace(',',' ')+','+a+'\n')
                             f.write(rezion_all[i]+','+j+','+adr2_2[0].replace('신주소 :','')+','+adr2_2[1].replace('신주소 :','')+','+name[k].text.replace(',',' ')+','+a+'\n')
-                            #print(rezion_all[i]+','+j+','+adr2_2[0].replace('신주소 :','')+','+adr2_2[1].replace('신주소 :','')+','+name[k].text.replace(',',' ')+','+a)
 
-                    # for r in ppp_data:
-                    #     print(r.text)
                     if (int(ch1)==int(ch2)):
                         f2.write(rezion_all[i]+','+j+','+str(water_wi)+"t\n")
                         break
@@ -236,97 +207,48 @@ def th_demo(num1,num2, f_name,f1_name,f2_name,driver,final_rezion,rezion_all):#f
     driver.quit()
 
 #쓰레드별로 실행
-th1=Thread(target=th_demo,args=(0,1,share_url+"final_text1.txt",share_url+"final_csv1.csv",share_url+"water_ton1.csv",driver,final_rezion,rezion_all))
-th1.start()
+thread_set = []
+thread_set.append(Thread(target=th_demo,args=(0,1,share_url+"final_text1.txt",share_url+"final_csv1.csv",share_url+"water_ton1.csv",driver[0],final_rezion,rezion_all)))
+thread_set.append(Thread(target=th_demo,args=(8,9,share_url+"final_text5.txt",share_url+"final_csv5.csv",share_url+"water_ton5.csv",driver[4],copy.deepcopy(final_rezion),copy.deepcopy(rezion_all))))
+thread_set.append(Thread(target=th_demo,args=(1,2,share_url+"final_text2.txt",share_url+"final_csv2.csv",share_url+"water_ton2.csv",driver[1],copy.deepcopy(final_rezion),copy.deepcopy(rezion_all))))
+thread_set.append(Thread(target=th_demo,args=(2,6,share_url+"final_text3.txt",share_url+"final_csv3.csv",share_url+"water_ton3.csv",driver[2],copy.deepcopy(final_rezion),copy.deepcopy(rezion_all))))
+thread_set.append(Thread(target=th_demo,args=(6,8,share_url+"final_text4.txt",share_url+"final_csv4.csv",share_url+"water_ton4.csv",driver[3],copy.deepcopy(final_rezion),copy.deepcopy(rezion_all))))
+thread_set.append(Thread(target=th_demo,args=(9,13,share_url+"final_text6.txt",share_url+"final_csv6.csv",share_url+"water_ton6.csv",driver[5],copy.deepcopy(final_rezion),copy.deepcopy(rezion_all))))
+thread_set.append(Thread(target=th_demo,args=(13,17,share_url+"final_text7.txt",share_url+"final_csv7.csv",share_url+"water_ton7.csv",driver[6],copy.deepcopy(final_rezion),copy.deepcopy(rezion_all))))
 
-th5=Thread(target=th_demo,args=(8,9,share_url+"final_text5.txt",share_url+"final_csv5.csv",share_url+"water_ton5.csv",driver5,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
-th5.start()
+for i in range(7):
+    thread_set[i].start()
 
-th2=Thread(target=th_demo,args=(1,2,share_url+"final_text2.txt",share_url+"final_csv2.csv",share_url+"water_ton2.csv",driver2,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
-th2.start()
-
-th3=Thread(target=th_demo,args=(2,6,share_url+"final_text3.txt",share_url+"final_csv3.csv",share_url+"water_ton3.csv",driver3,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
-th3.start()
-
-th4=Thread(target=th_demo,args=(6,8,share_url+"final_text4.txt",share_url+"final_csv4.csv",share_url+"water_ton4.csv",driver4,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
-th4.start()
-
-th6=Thread(target=th_demo,args=(9,13,share_url+"final_text6.txt",share_url+"final_csv6.csv",share_url+"water_ton6.csv",driver6,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
-th6.start()
-
-th7=Thread(target=th_demo,args=(13,17,share_url+"final_text7.txt",share_url+"final_csv7.csv",share_url+"water_ton7.csv",driver7,copy.deepcopy(final_rezion),copy.deepcopy(rezion_all)))
-th7.start()
-
-th1.join()
-th2.join()
-th3.join()
-th4.join()
-th5.join()
-th6.join()
-th7.join()
-
+for i in range(7):
+    thread_set[i].join()
 
 #쓰레드로 파일 7개 생성 -> 7개 파일 하나로 합쳐주는 작업
-f1= open(share_url+"final_csv1.csv","r")
-f2= open(share_url+"final_csv2.csv","r")
-f3= open(share_url+"final_csv3.csv","r")
-f4= open(share_url+"final_csv4.csv","r")
-f5= open(share_url+"final_csv5.csv","r")
-f6= open(share_url+"final_csv6.csv","r")
-f7= open(share_url+"final_csv7.csv","r")
-f_fi= open(share_url+"re_final_csv.csv","w")
+read_file_set = []
 
-wf1=open(share_url+"water_ton1.csv","r")
-wf2=open(share_url+"water_ton2.csv","r")
-wf3=open(share_url+"water_ton3.csv","r")
-wf4=open(share_url+"water_ton4.csv","r")
-wf5=open(share_url+"water_ton5.csv","r")
-wf6=open(share_url+"water_ton6.csv","r")
-wf7=open(share_url+"water_ton7.csv","r")
-wf_fi=open(share_url+"wtater_ton_final.csv","w")
+for i in range(1,8):
+    read_file_set.append(open(share_url+"final_csv"+str(i)+".csv","r"))
 
-for i in wf1.readlines():
-    wf_fi.write(i)
-for i in wf2.readlines():
-    wf_fi.write(i)
-for i in wf3.readlines():
-    wf_fi.write(i)
-for i in wf4.readlines():
-    wf_fi.write(i)
-for i in wf5.readlines():
-    wf_fi.write(i)
-for i in wf6.readlines():
-    wf_fi.write(i)
-for i in wf7.readlines():
-    wf_fi.write(i)
-for i in f1.readlines():
-    f_fi.write(i)
-for i in f2.readlines():
-    f_fi.write(i)
-for i in f3.readlines():
-    f_fi.write(i)
-for i in f4.readlines():
-    f_fi.write(i)
-for i in f5.readlines():
-    f_fi.write(i)
-for i in f6.readlines():
-    f_fi.write(i)
-for i in f7.readlines():
-    f_fi.write(i)
-f1.close()
-f2.close()
-f3.close()
-f4.close()
-f5.close()
-f6.close()
-f7.close()
-f_fi.close()
-wf1.close()
-wf2.close()
-wf3.close()
-wf4.close()
-wf5.close()
-wf6.close()
-wf7.close()
-wf_fi.close()
-print('end water')
+final_data= open(share_url+"re_final_csv.csv","w")
+
+
+for i in range(7):
+    for j in read_file_set[i].readlines():
+        final_data.write(j)
+    
+ton_file_set = []
+for i in range(1,8):
+    ton_file_set.append(open(share_url+"water_ton"+str(i)+".csv","r"))
+
+ton_file_data=open(share_url+"water_ton_final.csv","w")
+
+for i in range(7):
+    for j in ton_file_set[i].readlines():
+        ton_file_data.write(j)
+
+for i in range(7):
+    read_file_set[i].close()
+    ton_file_set[i].close()
+final_data.close()
+ton_file_data.close()
+
+print('water_final_code.py end...')
